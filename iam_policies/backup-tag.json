@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+          "Effect": "Allow",
+          "Action": [
+              "backup:TagResource",
+              "backup:ListTags",
+              "backup:UntagResource",
+              "tag:GetResources"
+          ],
+          "Resource": "*"
+      }
+    ]
+  }

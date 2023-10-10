@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: ${nodegrp_role_arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+%{ for role_name, groups in rbac_roles ~}
+    - rolearn: ${account}:role/${role_name}
+      username: ${role_name}
+      groups:
+%{ for group in groups ~}
+        - ${group}
+%{ endfor ~}
+%{ endfor ~}
+  mapUsers: |
+%{ for user_name, groups in rbac_users ~}
+    - userarn: ${account}:user/${user_name}
+      username: ${user_name}
+      groups:
+%{ for group in groups ~}      
+        - ${group}
+%{ endfor ~}
+%{ endfor ~}

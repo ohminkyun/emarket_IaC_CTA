@@ -1,0 +1,40 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-view
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:viewers
+%{ for rbac_policy in rbac_policies ~}
+---
+${rbac_policy}
+%{ endfor ~}
+%{ for namespace, labels in metadata ~}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${namespace}
+---
+apiVersion: vpcresources.k8s.aws/v1beta1
+kind: SecurityGroupPolicy
+metadata:
+  name: fargate-pod-sg-policy
+  namespace: ${namespace}
+spec:
+  podSelector:
+    matchLabels:
+%{ for key, value in labels[0] ~}
+      ${key}: ${value}
+%{ endfor ~}
+  securityGroups:
+    groupIds: 
+%{ for security_group_id in labels[1] ~}
+    - ${security_group_id}
+%{ endfor ~}
+%{ endfor ~}
