@@ -1,4 +1,4 @@
-my_home_ip = ["0.0.0.0/32"]  ## Your Home IP Address  (example: ["221.33.11.110/32"])
+my_home_ip = ["182.228.168.10/32"]  ## Your Home IP Address  (example: ["221.33.11.110/32"])
 svc_name = "emarket"
 purpose = "edu"
 env = "dev"
