@@ -35,10 +35,9 @@ output "db_user_password" {
   description = "The master password for the database"
   value       = random_string.password.result
 }
-/*
+
 ### DocumentDB(MongoDB)
 output "docdb_endpoint" {
   description = "Endpoint of DocumentDB"
   value = aws_docdb_cluster.emarket_docdb_cluster.endpoint
 }
-*/
